@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<menu-config xmlns="http://jmix.io/schema/ui/menu">
+
+    <menu id="application" caption="msg://com.company.training/menu.application" insertBefore="administration">
+        <item screen="t_User.browse" caption="msg://com.company.training.screen.user/UserBrowse.caption"/>
+        <item screen="themeSettingsScreen" caption="msg://io.jmix.ui.app.themesettings/themeSettings.caption"/>
+        <item screen="t_Invoice.browse" caption="msg://com.company.training.screen.invoice/invoiceBrowse.menu"/>
+        <item screen="t_Contract.browse" caption="msg://com.company.training.screen.contract/contractBrowse.menu"/>
+        <item screen="t_Organization.browse"
+              caption="msg://com.company.training.screen.organization/organizationBrowse.menu"/>
+        <item screen="t_Status.browse" caption="msg://com.company.training.screen.status/statusBrowse.menu"/>
+        <item screen="t_ServiceCompletionCertificate.browse"
+              caption="msg://com.company.training.screen.servicecompletioncertificate/serviceCompletionCertificateBrowse.menu"/>
+        <item screen="t_PostScreen" caption="msg://com.company.training.screen.post/postScreen.caption"/>
+        <item screen="t_BpmJmixScreen" caption="msg://com.company.training.screen.bpmjmix/bpmJmixScreen.caption"/>
+        <item screen="t_ManagerpickerScreen"
+              caption="msg://com.company.training.screen.managerpicker/managerpickerScreen.caption"/>
+        <item screen="t_SearchScreen" caption="msg://com.company.training.screen.search/searchScreen.caption"/>
+    </menu>
+
+</menu-config>

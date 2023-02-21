@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://jmix.io/schema/ui/window"
+        xmlns:c="http://jmix.io/schema/ui/jpql-condition"
+        caption="msg://serviceCompletionCertificateBrowse.caption"
+        focusComponent="serviceCompletionCertificatesTable">
+    <data readOnly="true">
+        <collection id="serviceCompletionCertificatesDc"
+                    class="com.company.training.entity.ServiceCompletionCertificate">
+            <fetchPlan extends="_base"/>
+            <loader id="serviceCompletionCertificatesDl">
+                <query>
+                    <![CDATA[select e from t_ServiceCompletionCertificate e]]>
+                </query>
+            </loader>
+        </collection>
+    </data>
+    <facets>
+        <dataLoadCoordinator auto="true"/>
+        <screenSettings id="settingsFacet" auto="true"/>
+    </facets>
+    <actions>
+        <action id="lookupSelectAction"
+                caption="msg:///actions.Select"
+                icon="LOOKUP_OK"
+                primary="true"
+                shortcut="${COMMIT_SHORTCUT}"/>
+        <action id="lookupCancelAction"
+                caption="msg:///actions.Cancel"
+                icon="LOOKUP_CANCEL"/>
+    </actions>
+    <dialogMode height="600"
+                width="800"/>
+    <layout expand="serviceCompletionCertificatesTable" spacing="true">
+        <filter id="filter"
+                dataLoader="serviceCompletionCertificatesDl">
+            <properties include=".*"/>
+        </filter>
+        <groupTable id="serviceCompletionCertificatesTable"
+                    width="100%"
+                    dataContainer="serviceCompletionCertificatesDc">
+            <actions>
+                <action id="create" type="create"/>
+                <action id="edit" type="edit"/>
+                <action id="remove" type="remove"/>
+                <action id="showRow" icon="INFO_CIRCLE" caption="msg://showRow.caption"/>
+                <action id="print"
+                        type="listPrintForm"
+                        caption="Print details"/>
+            </actions>
+            <columns>
+                <column id="number"/>
+                <column id="date"/>
+                <column id="amount"/>
+                <column id="vat"/>
+                <column id="totalAmount"/>
+                <column id="description"/>
+            </columns>
+            <simplePagination/>
+            <buttonsPanel id="buttonsPanel"
+                          alwaysVisible="true">
+                <button id="createBtn" action="serviceCompletionCertificatesTable.create"/>
+                <button id="editBtn" action="serviceCompletionCertificatesTable.edit"/>
+                <button id="removeBtn" action="serviceCompletionCertificatesTable.remove"/>
+                <button id="showRow" action="serviceCompletionCertificatesTable.showRow"/>
+                <button id="printBtn" action="serviceCompletionCertificatesTable.print"/>
+            </buttonsPanel>
+        </groupTable>
+        <hbox id="lookupActions" spacing="true" visible="false">
+            <button action="lookupSelectAction"/>
+            <button action="lookupCancelAction"/>
+        </hbox>
+    </layout>
+</window>

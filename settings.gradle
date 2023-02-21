@@ -1,0 +1,10 @@
+pluginManagement {
+    repositories {
+        maven {
+            url 'https://mos-nrepo-alt/repository/Gradle_Repo/'
+            allowInsecureProtocol = true
+        }
+        gradlePluginPortal()
+    }
+}
+rootProject.name = 'training'

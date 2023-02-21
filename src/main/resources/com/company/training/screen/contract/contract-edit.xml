@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://jmix.io/schema/ui/window"
+        caption="msg://contractEdit.caption"
+        focusComponent="form">
+    <data>
+        <instance id="contractDc"
+                  class="com.company.training.entity.Contract">
+            <fetchPlan extends="_base">
+                <property name="customer" fetchPlan="_base"/>
+                <property name="status" fetchPlan="_base"/>
+                <property name="stages" fetchPlan="_base"/>
+            </fetchPlan>
+            <loader/>
+            <collection id="stagesDc" property="stages"/>
+        </instance>
+        <collection id="customerDc"
+                    class="com.company.training.entity.Organization"
+                    fetchPlan="_local">
+            <loader id="customerLoader">
+                <query>
+                    <![CDATA[select e from t_Organization e]]>
+                </query>
+            </loader>
+        </collection>
+    </data>
+    <facets>
+        <dataLoadCoordinator auto="true"/>
+        <screenSettings id="settingsFacet" auto="true"/>
+    </facets>
+    <actions>
+        <action id="windowCommitAndClose" caption="msg:///actions.Ok"
+                icon="EDITOR_OK"
+                primary="true"
+                shortcut="${COMMIT_SHORTCUT}"/>
+        <action id="windowClose"
+                caption="msg:///actions.Close"
+                icon="EDITOR_CANCEL"/>
+    </actions>
+    <dialogMode height="600"
+                width="800"/>
+    <layout spacing="true" expand="scrollBox">
+        <scrollBox id="scrollBox" spacing="true">
+            <form id="form" dataContainer="contractDc">
+                <column width="350px">
+                    <entityComboBox dataContainer="contractDc"
+                                    optionsContainer="customerDc"
+                                    property="customer">
+                        <actions>
+                            <action id="lookup" type="entity_lookup"/>
+                            <action id="clear" type="entity_clear"/>
+                        </actions>
+                    </entityComboBox>
+                    <entityComboBox dataContainer="contractDc"
+                                    optionsContainer="customerDc"
+                                    property="performer">
+                        <actions>
+                            <action id="lookup" type="entity_lookup"/>
+                            <action id="clear" type="entity_clear"/>
+                        </actions>
+                    </entityComboBox>
+                    <textField id="numberField" property="number"/>
+                    <dateField id="signedDateField" property="signedDate"/>
+                    <comboBox id="typeField" property="type"/>
+                    <dateField id="dateFromField" property="dateFrom"/>
+                    <dateField id="dateToField" property="dateTo"/>
+                </column>
+                <column width="350px">
+                    <textField id="amountField" property="amount"/>
+                    <textField id="vatField" property="vat" editable="false"/>
+                    <textField id="totalAmountField" property="totalAmount" editable="false"/>
+                    <textField id="customerSignerField" property="customerSigner"/>
+                    <textField id="performerSignerField" property="performerSigner"/>
+                    <entityPicker id="statusField" property="status">
+                        <actions>
+                            <action id="entityLookup" type="entity_lookup"/>
+                            <action id="entityClear" type="entity_clear"/>
+                        </actions>
+                    </entityPicker>
+                </column>
+            </form>
+            <groupBox id="stagesBox" caption="msg://com.company.training.entity/Contract.stages">
+                <table id="stagesTable" dataContainer="stagesDc" width="100%" height="200px">
+                    <actions>
+                        <action id="create" type="create"/>
+                        <action id="edit" type="edit"/>
+                        <action id="remove" type="remove"></action>
+                        <action id="createCertificate"
+                                caption="msg://createCertificate.caption"
+                                icon="ADD_ACTION"/>
+                    </actions>
+                    <columns>
+                        <column id="name"/>
+                        <column id="dateFrom"/>
+                        <column id="dateTo"/>
+                        <column id="amount"/>
+                        <column id="vat"/>
+                        <column id="totalAmount"/>
+                        <column id="description"/>
+                    </columns>
+                    <buttonsPanel>
+                        <button action="stagesTable.create"/>
+                        <button action="stagesTable.edit"/>
+                        <button action="stagesTable.remove"/>
+                        <button id="addCertificate" action="stagesTable.createCertificate"/>
+                    </buttonsPanel>
+                </table>
+            </groupBox>
+        </scrollBox>
+        <hbox id="editActions" spacing="true">
+            <button id="commitAndCloseBtn" action="windowCommitAndClose"/>
+            <button id="closeBtn" action="windowClose"/>
+        </hbox>
+    </layout>
+</window>

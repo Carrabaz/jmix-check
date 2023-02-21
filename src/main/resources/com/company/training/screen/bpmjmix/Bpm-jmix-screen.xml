@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://jmix.io/schema/ui/window"
+        caption="msg://bpmJmixScreen.caption">
+    <layout>
+        <form>
+            <textField id="field1" caption="Поле 1" datatype="string"/>
+            <textField id="field2" caption="Поле 2" datatype="string"/>
+        </form>
+    </layout>
+</window>

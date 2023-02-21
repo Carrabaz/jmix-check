@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://jmix.io/schema/ui/window"
+        caption="msg://postScreen.caption">
+    <data>
+        <collection id="postsDc"
+                    class="com.company.training.entity.Post">
+            <loader id="postsDl"/>
+        </collection>
+    </data>
+    <facets>
+        <dataLoadCoordinator auto="true"/>
+    </facets>
+    <layout expand="postsTable">
+        <table id="postsTable"
+               width="100%"
+               dataContainer="postsDc">
+            <columns>
+                <column id="title"/>
+                <column id="name"/>
+            </columns>
+        </table>
+    </layout>
+</window>
