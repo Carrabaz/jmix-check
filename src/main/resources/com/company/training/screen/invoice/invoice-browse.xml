@@ -35,10 +35,12 @@
                 dataLoader="invoicesDl">
             <properties include=".*"/>
         </filter>
-        <form id="form" dataContainer="invoicesDc">
+        <form id="form" dataContainer="invoicesDc" visible="false">
             <column width="350px">
-                <fileStorageUpload id="fileField" property="doc" caption="Файлы"/>
-                <fileMultiUpload id="fileMultiField" caption="Много файлов"/>
+                <fileStorageUpload id="fileField" property="doc" caption="Загрузить файл"/>
+            </column>
+            <column>
+                <fileMultiUpload id="fileMultiField" caption="Загрузить несколько файлов"/>
             </column>
         </form>
         <groupTable id="invoicesTable"
@@ -56,8 +58,8 @@
                 <column id="vat"/>
                 <column id="totalAmount"/>
                 <column id="description"/>
-                <column id="files"/>
-                <column id="doc" caption="Здесь скачивать"/>
+                <column id="doc" caption="Файл"/>
+                <column id="multiFiles" caption="Файлы"/>
             </columns>
             <simplePagination/>
             <buttonsPanel id="buttonsPanel"

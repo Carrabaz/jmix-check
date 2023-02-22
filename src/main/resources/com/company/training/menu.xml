@@ -16,6 +16,8 @@
         <item screen="t_ManagerpickerScreen"
               caption="msg://com.company.training.screen.managerpicker/managerpickerScreen.caption"/>
         <item screen="t_SearchScreen" caption="msg://com.company.training.screen.search/searchScreen.caption"/>
+        <item screen="t_MultidownloadScreen"
+              caption="msg://com.company.training.screen.multidownload/multidownloadScreen.caption"/>
     </menu>
 
 </menu-config>

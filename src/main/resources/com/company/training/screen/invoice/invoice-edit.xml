@@ -33,9 +33,6 @@
                 <textField id="vatField" property="vat"/>
                 <textField id="totalAmountField" property="totalAmount"/>
                 <textArea id="descriptionField" property="description" rows="5"/>
-                <fileMultiUpload id="filesField"/>
-                <fileUpload id="filesField" property="files"/>
-                <fileStorageUpload id="docField" property="doc"/>
             </column>
         </form>
         <hbox id="editActions" spacing="true">
