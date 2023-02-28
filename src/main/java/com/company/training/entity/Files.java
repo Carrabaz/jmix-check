@@ -4,16 +4,14 @@ import io.jmix.core.FileRef;
 import io.jmix.core.entity.annotation.JmixGeneratedValue;
 import io.jmix.core.metamodel.annotation.JmixEntity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.UUID;
 
 @JmixEntity
 @Table(name = "T_FILES")
 @Entity(name = "t_Files")
 public class Files {
+
     @JmixGeneratedValue
     @Column(name = "ID", nullable = false)
     @Id
@@ -25,7 +23,8 @@ public class Files {
     @Column(name = "ENTITY_ID")
     private String entityId;
 
-    @Column(name = "FILE", length = 1024)
+    @Lob
+    @Column(name = "FILE")
     private FileRef file;
 
     @Column(name = "FILE_NAME")

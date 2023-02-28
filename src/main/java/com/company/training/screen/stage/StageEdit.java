@@ -1,10 +1,9 @@
 package com.company.training.screen.stage;
 
-import com.company.training.app.Vat;
 import com.company.training.entity.Contract;
+import com.company.training.entity.CustomSettings;
 import com.company.training.entity.Stage;
-import io.jmix.ui.component.TextField;
-import io.jmix.ui.model.DataContext;
+import io.jmix.appsettings.AppSettings;
 import io.jmix.ui.screen.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,51 +19,28 @@ public class StageEdit extends StandardEditor<Stage> {
     private static final Logger log = LoggerFactory.getLogger(StageEdit.class);
 
     @Autowired
-    private TextField<String> nameField;
-    private String name;
-    @Autowired
-    private Vat vat;
+    private AppSettings appSettings;
 
-    @Subscribe
-    public void onBeforeShow(BeforeShowEvent event) {
-        log.info("before show method");
-        /*if (name != null) {
-            nameField.setValue(name);
-        }*/
-        //getScreenData().getDataContext().getParent()
-    }
-
-    @Subscribe(target = Target.DATA_CONTEXT)
-    public void onChange(DataContext.ChangeEvent event) {
-        log.info("After added Stage entity");
-        //getScreenData().getDataContext().getParent().getModified()
-
-    }
-
+    /**
+     * Добавление default значений
+     *
+     * @param event
+     */
     @Subscribe
     public void onInitEntity(InitEntityEvent<Stage> event) {
-        log.info("init entity method");
-        //DataContext dc = getScreenData().getDataContext().getParent().;
-        //Set<Object> set = getScreenData().getDataContext().getParent().getModified();
-        //long count = getScreenData().getDataContext().getParent().getModified().stream().count();
+        log.info("<< Set default stage values >>");
+        BigDecimal stageVat = appSettings.load(CustomSettings.class).getStageVat();
         Contract contract = event.getEntity().getContract();
         Stage stage = event.getEntity();
         stage.setAmount(contract.getAmount());
         stage.setVat(BigDecimal.valueOf(stage.getAmount())
-                .multiply(BigDecimal.valueOf(vat.getVatForStages()).divide(BigDecimal.valueOf(100)))
-                .multiply(BigDecimal.valueOf(1)));
+                .multiply(stageVat)
+                .multiply(computeCustomerVat(contract)));
         stage.setTotalAmount(stage.getAmount() + stage.getVat().intValue());
     }
 
-
-    @Subscribe
-    public void onInit(InitEvent event) {
-        /*if (event.getOptions() instanceof MapScreenOptions) {
-            MapScreenOptions options = (MapScreenOptions) event.getOptions();
-            name = (String) options.getParams().get("Name");
-
-        }*/
-        log.info("onInit method ");
+    private BigDecimal computeCustomerVat(Contract customer) {
+        boolean escapeVat = (customer.getCustomer().getEscapeVat() == null) ? true : false;
+        return escapeVat ? BigDecimal.valueOf(0) : BigDecimal.valueOf(1);
     }
-
 }

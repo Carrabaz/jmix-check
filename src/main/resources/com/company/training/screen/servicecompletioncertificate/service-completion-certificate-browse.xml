@@ -42,7 +42,6 @@
                 <action id="create" type="create"/>
                 <action id="edit" type="edit"/>
                 <action id="remove" type="remove"/>
-                <action id="showRow" icon="INFO_CIRCLE" caption="msg://showRow.caption"/>
                 <action id="print"
                         type="listPrintForm"
                         caption="Print details"/>
@@ -61,7 +60,6 @@
                 <button id="createBtn" action="serviceCompletionCertificatesTable.create"/>
                 <button id="editBtn" action="serviceCompletionCertificatesTable.edit"/>
                 <button id="removeBtn" action="serviceCompletionCertificatesTable.remove"/>
-                <button id="showRow" action="serviceCompletionCertificatesTable.showRow"/>
                 <button id="printBtn" action="serviceCompletionCertificatesTable.print"/>
             </buttonsPanel>
         </groupTable>

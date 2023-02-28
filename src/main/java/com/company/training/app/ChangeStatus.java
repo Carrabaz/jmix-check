@@ -17,10 +17,15 @@ import org.springframework.stereotype.Component;
 public class ChangeStatus implements JavaDelegate {
 
     private static final Logger log = LoggerFactory.getLogger(ChangeStatus.class);
-    @Autowired
-    DataManager dataManager;
-    @Autowired
+
+    private DataManager dataManager;
+
     private Emailer emailer;
+
+    public ChangeStatus(DataManager dataManager, Emailer emailer) {
+        this.dataManager = dataManager;
+        this.emailer = emailer;
+    }
 
     public int setStatus(Contract contract, String status) {
         Status newStatus = dataManager.load(Status.class)

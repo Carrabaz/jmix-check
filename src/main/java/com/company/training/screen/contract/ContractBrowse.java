@@ -1,7 +1,10 @@
 package com.company.training.screen.contract;
 
-import io.jmix.ui.screen.*;
 import com.company.training.entity.Contract;
+import io.jmix.ui.screen.LookupComponent;
+import io.jmix.ui.screen.StandardLookup;
+import io.jmix.ui.screen.UiController;
+import io.jmix.ui.screen.UiDescriptor;
 
 @UiController("t_Contract.browse")
 @UiDescriptor("contract-browse.xml")

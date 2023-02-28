@@ -13,10 +13,13 @@ import java.util.List;
 @UiController("t_MultidownloadScreen")
 @UiDescriptor("MultiDownLoad-screen.xml")
 public class MultidownloadScreen extends Screen {
+
     @Autowired
     private ComboBox<Files> filesCombobox;
+
     @Autowired
     private DataManager dataManager;
+
     @Autowired
     private Downloader downloader;
 

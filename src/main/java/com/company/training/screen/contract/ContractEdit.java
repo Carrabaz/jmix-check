@@ -28,23 +28,32 @@ import java.util.Map;
 @UiDescriptor("contract-edit.xml")
 @EditedEntityContainer("contractDc")
 public class ContractEdit extends StandardEditor<Contract> {
+
     private static final Logger log = LoggerFactory.getLogger(ContractEdit.class);
+
     @Autowired
     private DataManager dataManager;
-    @Autowired
-    private CollectionPropertyContainer<Stage> stagesDc;
-    @Autowired
-    private Table<Stage> stagesTable;
-    @Autowired
-    private ScreenBuilders screenBuilders;
-    @Autowired
-    private TextField<Integer> amountField;
-    @Autowired
-    private TextField<BigDecimal> vatField;
+
     @Autowired
     private Notifications notifications;
+
     @Autowired
     private AppSettings appSettings;
+
+    @Autowired
+    private ScreenBuilders screenBuilders;
+
+    @Autowired
+    private CollectionPropertyContainer<Stage> stagesDc;
+
+    @Autowired
+    private TextField<BigDecimal> vatField;
+
+    @Autowired
+    private TextField<Integer> amountField;
+
+    @Autowired
+    private Table<Stage> stagesTable;
 
     @Subscribe("stagesTable.createCertificate")
     public void onStagesTableCreateCertificate(Action.ActionPerformedEvent event) {

@@ -11,7 +11,6 @@
         <item screen="t_Status.browse" caption="msg://com.company.training.screen.status/statusBrowse.menu"/>
         <item screen="t_ServiceCompletionCertificate.browse"
               caption="msg://com.company.training.screen.servicecompletioncertificate/serviceCompletionCertificateBrowse.menu"/>
-        <item screen="t_PostScreen" caption="msg://com.company.training.screen.post/postScreen.caption"/>
         <item screen="t_BpmJmixScreen" caption="msg://com.company.training.screen.bpmjmix/bpmJmixScreen.caption"/>
         <item screen="t_ManagerpickerScreen"
               caption="msg://com.company.training.screen.managerpicker/managerpickerScreen.caption"/>
