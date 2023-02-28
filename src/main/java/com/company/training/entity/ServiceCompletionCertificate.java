@@ -14,6 +14,7 @@ import java.util.UUID;
 @Table(name = "T_SERVICE_COMPLETION_CERTIFICA")
 @Entity(name = "t_ServiceCompletionCertificate")
 public class ServiceCompletionCertificate {
+
     @JmixGeneratedValue
     @Column(name = "ID", nullable = false)
     @Id

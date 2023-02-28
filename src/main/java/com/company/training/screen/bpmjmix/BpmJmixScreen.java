@@ -29,9 +29,6 @@ public class BpmJmixScreen extends Screen {
     @ProcessVariable
     private TextField<String> field1;
 
-    @Autowired
-    private ProcessFormContext processFormContext;
-
     @Subscribe
     public void onInit(InitEvent event) {
         log.info("Initialization custom screen");

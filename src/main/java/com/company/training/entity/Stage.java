@@ -48,7 +48,7 @@ public class Stage {
     @Lob
     private String description;
 
-    @OnDeleteInverse(DeletePolicy.CASCADE)
+    @OnDeleteInverse(DeletePolicy.UNLINK)
     @JoinColumn(name = "CONTRACT_ID", nullable = false)
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     private Contract contract;

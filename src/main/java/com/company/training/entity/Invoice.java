@@ -15,6 +15,7 @@ import java.util.UUID;
 @Table(name = "T_INVOICE")
 @Entity(name = "t_Invoice")
 public class Invoice {
+
     @JmixGeneratedValue
     @Column(name = "ID", nullable = false)
     @Id
@@ -41,7 +42,8 @@ public class Invoice {
     @Lob
     private String description;
 
-    @Column(name = "DOC", length = 1024)
+    @Lob
+    @Column(name = "DOC")
     private FileRef doc;
 
     public FileRef getDoc() {

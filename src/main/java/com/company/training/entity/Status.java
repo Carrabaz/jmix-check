@@ -14,6 +14,7 @@ import java.util.UUID;
 @Table(name = "T_STATUS")
 @Entity(name = "t_Status")
 public class Status {
+
     @JmixGeneratedValue
     @Column(name = "ID", nullable = false)
     @Id

@@ -24,24 +24,34 @@ import java.util.UUID;
 @UiDescriptor("invoice-browse.xml")
 @LookupComponent("invoicesTable")
 public class InvoiceBrowse extends StandardLookup<Invoice> {
+
     @Autowired
     private TemporaryStorage temporaryStorage;
+
     @Autowired
     private DataManager dataManager;
+
     @Autowired
     private UiComponents uiComponents;
+
     @Autowired
     private FileMultiUploadField fileMultiField;
+
     @Autowired
     private Notifications notifications;
+
     @Autowired
     private ScreenBuilders screenBuilders;
+
     @Autowired
     private GroupTable<Invoice> invoicesTable;
+
     @Autowired
     private Downloader downloader;
+
     @Autowired
     private CollectionContainer<Invoice> invoicesDc;
+
     @Autowired
     private Form form;
 
