@@ -1,37 +1,28 @@
 package com.company.training.screen.contract;
 
-import com.company.training.app.Vat;
+import com.company.training.entity.Contract;
 import com.company.training.entity.CustomSettings;
 import com.company.training.entity.ServiceCompletionCertificate;
 import com.company.training.entity.Stage;
-import com.company.training.screen.servicecompletioncertificate.ServiceCompletionCertificateEdit;
 import io.jmix.appsettings.AppSettings;
-import io.jmix.bpm.engine.events.UserTaskAssignedEvent;
 import io.jmix.core.DataManager;
-import io.jmix.localfs.LocalFileStorageProperties;
 import io.jmix.ui.Notifications;
 import io.jmix.ui.ScreenBuilders;
-import io.jmix.ui.Screens;
 import io.jmix.ui.action.Action;
 import io.jmix.ui.component.Button;
 import io.jmix.ui.component.Table;
 import io.jmix.ui.component.TextField;
-import io.jmix.ui.component.formatter.NumberFormatter;
 import io.jmix.ui.model.CollectionContainer;
 import io.jmix.ui.model.CollectionPropertyContainer;
 import io.jmix.ui.model.DataContext;
 import io.jmix.ui.screen.*;
-import com.company.training.entity.Contract;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.math.BigDecimal;
-import java.math.BigInteger;
-import java.text.NumberFormat;
 import java.time.LocalDate;
 import java.util.Map;
-import java.util.Objects;
 
 @UiController("t_Contract.edit")
 @UiDescriptor("contract-edit.xml")
@@ -45,19 +36,11 @@ public class ContractEdit extends StandardEditor<Contract> {
     @Autowired
     private Table<Stage> stagesTable;
     @Autowired
-    private Vat vat;
-    @Autowired
     private ScreenBuilders screenBuilders;
-    @Autowired
-    private Screens screens;
-    @Autowired
-    private LocalFileStorageProperties localFileStorageProperties;
     @Autowired
     private TextField<Integer> amountField;
     @Autowired
     private TextField<BigDecimal> vatField;
-    @Autowired
-    private TextField<Integer> totalAmountField;
     @Autowired
     private Notifications notifications;
     @Autowired
@@ -70,6 +53,7 @@ public class ContractEdit extends StandardEditor<Contract> {
 
     /**
      * Добавление сертификата к этапу контракта
+     *
      * @param event
      */
     @Subscribe("addCertificate")
@@ -95,6 +79,7 @@ public class ContractEdit extends StandardEditor<Contract> {
 
     /**
      * Создание этапа по умолчанию, если пользователь не стал создавать этапов
+     *
      * @param event
      */
     @Subscribe(target = Target.DATA_CONTEXT)
@@ -125,6 +110,7 @@ public class ContractEdit extends StandardEditor<Contract> {
 
     /**
      * Изменение численных значений у контракта после модификаций в этапах
+     *
      * @param afterShowEvent
      */
     @Subscribe

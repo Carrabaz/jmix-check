@@ -41,9 +41,6 @@ public class Invoice {
     @Lob
     private String description;
 
-    @Column(name = "FILES")
-    private byte[] files;
-
     @Column(name = "DOC", length = 1024)
     private FileRef doc;
 
@@ -53,14 +50,6 @@ public class Invoice {
 
     public void setDoc(FileRef doc) {
         this.doc = doc;
-    }
-
-    public byte[] getFiles() {
-        return files;
-    }
-
-    public void setFiles(byte[] files) {
-        this.files = files;
     }
 
     public String getDescription() {

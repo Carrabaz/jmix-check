@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://jmix.io/schema/ui/window"
+        caption="msg://multidownloadScreen.caption">
+    <layout>
+        <form id="formId" >
+            <column id="column1">
+                <comboBox id="filesCombobox"/>
+            </column>
+            <column id="column2">
+                <button id="down" caption="Скачать"/>
+            </column>
+        </form>
+    </layout>
+</window>
