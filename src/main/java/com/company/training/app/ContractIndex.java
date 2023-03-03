@@ -7,6 +7,6 @@ import io.jmix.search.index.annotation.JmixEntitySearchIndex;
 @JmixEntitySearchIndex(entity = Contract.class)
 public interface ContractIndex {
 
-    @AutoMappedField(includeProperties = {"amount", "customer.name", "performerSigner"})
+    @AutoMappedField(includeProperties = {"customer.name", "performer.name", "number", "totalAmount"})
     void orderMapping();
 }

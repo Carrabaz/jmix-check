@@ -2,10 +2,12 @@ package com.company.training.entity;
 
 import io.jmix.core.entity.annotation.JmixGeneratedValue;
 import io.jmix.core.metamodel.annotation.Composition;
+import io.jmix.core.metamodel.annotation.DependsOnProperties;
 import io.jmix.core.metamodel.annotation.InstanceName;
 import io.jmix.core.metamodel.annotation.JmixEntity;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
@@ -48,7 +50,8 @@ public class Contract {
     @Column(name = "DATE_TO")
     private LocalDate dateTo;
 
-    @Column(name = "AMOUNT")
+    @NotNull
+    @Column(name = "AMOUNT", nullable = false)
     private Integer amount;
 
     @Column(name = "VAT", precision = 19, scale = 2)
@@ -192,7 +195,8 @@ public class Contract {
     }
 
     @InstanceName
+    @DependsOnProperties({"number", "customer"})
     public String contractName() {
-        return "< " + getNumber() + " " + getCustomer().getName() + " >";
+        return "< " + number + " " + customer.getName() + " >";
     }
 }

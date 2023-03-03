@@ -30,8 +30,8 @@
                 <textField id="numberField" property="number"/>
                 <dateField id="dateField" property="date"/>
                 <textField id="amountField" property="amount"/>
-                <textField id="vatField" property="vat"/>
-                <textField id="totalAmountField" property="totalAmount"/>
+                <textField id="vatField" property="vat" editable="false"/>
+                <textField id="totalAmountField" property="totalAmount" editable="false"/>
                 <textArea id="descriptionField" property="description" rows="5"/>
             </column>
         </form>
