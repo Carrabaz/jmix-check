@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:flowable="http://flowable.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:jmix="http://jmix.io/schema/bpm/bpmn" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.flowable.org/processdef">
+  <process id="AutoStartChangeStatus" name="Contract Status Changer" isExecutable="true" flowable:candidateStarterGroups="" jmix:candidateStarterGroupsValue="">
+    <startEvent id="startEvent1" name="Начало работы с Контрактом">
+      <extensionElements>
+        <jmix:formData type="no-form" />
+        <jmix:processVariables>
+          <jmix:processVariable name="contract" type="entity">
+            <jmix:processVariableProperty name="entityName" value="t_Contract" />
+          </jmix:processVariable>
+        </jmix:processVariables>
+      </extensionElements>
+      <outgoing>Flow_19rfpla</outgoing>
+    </startEvent>
+    <sequenceFlow id="Flow_19rfpla" sourceRef="startEvent1" targetRef="Activity_1cob2zj">
+      <extensionElements>
+        <jmix:conditionDetails conditionSource="expression" />
+      </extensionElements>
+    </sequenceFlow>
+    <userTask id="Activity_1cob2zj" name="Перевод в статус Исполнен" flowable:assignee="${manager.username}" jmix:assigneeSource="processVariable" jmix:assigneeValue="manager">
+      <extensionElements>
+        <jmix:formData type="jmix-screen" openMode="DIALOG" screenId="t_Contract.edit">
+          <jmix:formParams>
+            <jmix:formParam name="contract" value="contract" valueSource="processVariable" />
+          </jmix:formParams>
+          <jmix:formOutcomes>
+            <jmix:formOutcome id="execute_yes" />
+            <jmix:formOutcome id="execute_no" />
+            <jmix:formOutcome id="execute_archive_yes" />
+            <jmix:formOutcome id="execute_archive_no" />
+          </jmix:formOutcomes>
+        </jmix:formData>
+      </extensionElements>
+      <incoming>Flow_19rfpla</incoming>
+      <outgoing>Flow_0uu2pnl</outgoing>
+    </userTask>
+    <exclusiveGateway id="Gateway_0xojqe2" name="В Исполнен?">
+      <incoming>Flow_0uu2pnl</incoming>
+      <outgoing>Flow_17wljfs</outgoing>
+      <outgoing>Flow_1vjp9fj</outgoing>
+    </exclusiveGateway>
+    <sequenceFlow id="Flow_0uu2pnl" sourceRef="Activity_1cob2zj" targetRef="Gateway_0xojqe2">
+      <extensionElements>
+        <jmix:conditionDetails conditionSource="expression" />
+      </extensionElements>
+    </sequenceFlow>
+    <sequenceFlow id="Flow_17wljfs" name="Да" sourceRef="Gateway_0xojqe2" targetRef="Activity_0cmfnd7">
+      <extensionElements>
+        <jmix:conditionDetails conditionSource="userTaskOutcome" conditionType="anyoneCompleted" userTaskId="Activity_1cob2zj" userTaskOutcome="execute_yes" />
+      </extensionElements>
+      <conditionExpression xsi:type="tFormalExpression">${execution.getVariable('Activity_1cob2zj_result') != null &amp;&amp; bpm_UserTaskResults.containsOutcome(execution.getVariable('Activity_1cob2zj_result'), 'execute_yes')}</conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="Flow_1vjp9fj" name="Нет" sourceRef="Gateway_0xojqe2" targetRef="Event_0jpcbc8">
+      <extensionElements>
+        <jmix:conditionDetails conditionSource="userTaskOutcome" conditionType="anyoneCompleted" userTaskId="Activity_1cob2zj" userTaskOutcome="execute_no" />
+      </extensionElements>
+      <conditionExpression xsi:type="tFormalExpression">${execution.getVariable('Activity_1cob2zj_result') != null &amp;&amp; bpm_UserTaskResults.containsOutcome(execution.getVariable('Activity_1cob2zj_result'), 'execute_no')}</conditionExpression>
+    </sequenceFlow>
+    <serviceTask id="Activity_0cmfnd7" name="Перевод в Исполнен" flowable:expression="${changeStatus.setStatus(contract, &#39;Исполнен&#39;)}" jmix:taskType="springBean" jmix:beanName="changeStatus">
+      <extensionElements>
+        <jmix:formData type="input-dialog" openMode="DIALOG">
+          <jmix:formFields>
+            <jmix:formField id="Id" caption="Номер процесса" type="long" editable="false" required="false" />
+          </jmix:formFields>
+        </jmix:formData>
+        <jmix:springBean beanName="changeStatus" methodName="setStatus">
+          <jmix:methodParam name="contract" type="com.company.training.entity.Contract" isVariable="true">contract</jmix:methodParam>
+          <jmix:methodParam name="status" type="java.lang.String" isVariable="false">Исполнен</jmix:methodParam>
+        </jmix:springBean>
+      </extensionElements>
+      <incoming>Flow_17wljfs</incoming>
+      <outgoing>Flow_1w346jc</outgoing>
+    </serviceTask>
+    <userTask id="Activity_1wa2r23" name="Перевод в статус Архив" flowable:assignee="${manager.username}" jmix:assigneeSource="processVariable" jmix:assigneeValue="manager">
+      <extensionElements>
+        <jmix:formData type="jmix-screen" openMode="DIALOG" screenId="t_Contract.edit">
+          <jmix:formParams>
+            <jmix:formParam name="contract" value="contract" valueSource="processVariable" />
+          </jmix:formParams>
+          <jmix:formOutcomes>
+            <jmix:formOutcome id="execute_yes" />
+            <jmix:formOutcome id="execute_no" />
+            <jmix:formOutcome id="execute_archive_yes" />
+            <jmix:formOutcome id="execute_archive_no" />
+          </jmix:formOutcomes>
+        </jmix:formData>
+      </extensionElements>
+      <incoming>Flow_1w346jc</incoming>
+      <outgoing>Flow_0ugw6wv</outgoing>
+    </userTask>
+    <exclusiveGateway id="Gateway_022v9b9" name="В Архив?">
+      <incoming>Flow_0ugw6wv</incoming>
+      <outgoing>Flow_19n1mcb</outgoing>
+      <outgoing>Flow_16bujow</outgoing>
+    </exclusiveGateway>
+    <sequenceFlow id="Flow_0ugw6wv" sourceRef="Activity_1wa2r23" targetRef="Gateway_022v9b9" />
+    <sequenceFlow id="Flow_19n1mcb" name="Да" sourceRef="Gateway_022v9b9" targetRef="Activity_07aefyw">
+      <extensionElements>
+        <jmix:conditionDetails conditionSource="userTaskOutcome" conditionType="anyoneCompleted" userTaskId="Activity_1wa2r23" userTaskOutcome="execute_archive_yes" />
+      </extensionElements>
+      <conditionExpression xsi:type="tFormalExpression">${execution.getVariable('Activity_1wa2r23_result') != null &amp;&amp; bpm_UserTaskResults.containsOutcome(execution.getVariable('Activity_1wa2r23_result'), 'execute_archive_yes')}</conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="Flow_16bujow" name="Нет" sourceRef="Gateway_022v9b9" targetRef="Event_18h0jfb">
+      <extensionElements>
+        <jmix:conditionDetails conditionSource="userTaskOutcome" conditionType="anyoneCompleted" userTaskId="Activity_1wa2r23" userTaskOutcome="execute_archive_no" />
+      </extensionElements>
+      <conditionExpression xsi:type="tFormalExpression">${execution.getVariable('Activity_1wa2r23_result') != null &amp;&amp; bpm_UserTaskResults.containsOutcome(execution.getVariable('Activity_1wa2r23_result'), 'execute_archive_no')}</conditionExpression>
+    </sequenceFlow>
+    <serviceTask id="Activity_07aefyw" name="Перевод в Архив" flowable:expression="${changeStatus.setStatus(contract, &#39;В Архив&#39;)}" jmix:taskType="springBean" jmix:beanName="changeStatus">
+      <extensionElements>
+        <jmix:springBean beanName="changeStatus" methodName="setStatus">
+          <jmix:methodParam name="contract" type="com.company.training.entity.Contract" isVariable="true">contract</jmix:methodParam>
+          <jmix:methodParam name="status" type="java.lang.String" isVariable="false">В Архив</jmix:methodParam>
+        </jmix:springBean>
+      </extensionElements>
+      <incoming>Flow_19n1mcb</incoming>
+      <outgoing>Flow_19gs81b</outgoing>
+    </serviceTask>
+    <endEvent id="Event_0se6jth" name="Конец работы">
+      <incoming>Flow_19gs81b</incoming>
+    </endEvent>
+    <sequenceFlow id="Flow_19gs81b" sourceRef="Activity_07aefyw" targetRef="Event_0se6jth">
+      <extensionElements>
+        <jmix:conditionDetails conditionSource="expression" />
+      </extensionElements>
+    </sequenceFlow>
+    <endEvent id="Event_0jpcbc8" name="Завершение">
+      <incoming>Flow_1vjp9fj</incoming>
+    </endEvent>
+    <endEvent id="Event_18h0jfb" name="Завершение">
+      <incoming>Flow_16bujow</incoming>
+    </endEvent>
+    <sequenceFlow id="Flow_1w346jc" sourceRef="Activity_0cmfnd7" targetRef="Activity_1wa2r23">
+      <extensionElements>
+        <jmix:conditionDetails conditionSource="expression" />
+      </extensionElements>
+    </sequenceFlow>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_process">
+    <bpmndi:BPMNPlane id="BPMNPlane_process" bpmnElement="AutoStartChangeStatus">
+      <bpmndi:BPMNEdge id="Flow_1w346jc_di" bpmnElement="Flow_1w346jc">
+        <omgdi:waypoint x="710" y="165" />
+        <omgdi:waypoint x="810" y="165" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_19gs81b_di" bpmnElement="Flow_19gs81b">
+        <omgdi:waypoint x="1270" y="165" />
+        <omgdi:waypoint x="1382" y="165" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_16bujow_di" bpmnElement="Flow_16bujow">
+        <omgdi:waypoint x="1040" y="190" />
+        <omgdi:waypoint x="1040" y="302" />
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds x="1050" y="223" width="20" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_19n1mcb_di" bpmnElement="Flow_19n1mcb">
+        <omgdi:waypoint x="1065" y="165" />
+        <omgdi:waypoint x="1170" y="165" />
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds x="1111" y="147" width="13" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0ugw6wv_di" bpmnElement="Flow_0ugw6wv">
+        <omgdi:waypoint x="910" y="165" />
+        <omgdi:waypoint x="1015" y="165" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1vjp9fj_di" bpmnElement="Flow_1vjp9fj">
+        <omgdi:waypoint x="490" y="190" />
+        <omgdi:waypoint x="490" y="302" />
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds x="500" y="210" width="20" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_17wljfs_di" bpmnElement="Flow_17wljfs">
+        <omgdi:waypoint x="515" y="165" />
+        <omgdi:waypoint x="610" y="165" />
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds x="556" y="147" width="13" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0uu2pnl_di" bpmnElement="Flow_0uu2pnl">
+        <omgdi:waypoint x="370" y="165" />
+        <omgdi:waypoint x="465" y="165" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_19rfpla_di" bpmnElement="Flow_19rfpla">
+        <omgdi:waypoint x="180" y="165" />
+        <omgdi:waypoint x="270" y="165" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="BPMNShape_startEvent1" bpmnElement="startEvent1">
+        <omgdc:Bounds x="150" y="150" width="30" height="30" />
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds x="121" y="187" width="88" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1hov034_di" bpmnElement="Activity_1cob2zj">
+        <omgdc:Bounds x="270" y="125" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_0xojqe2_di" bpmnElement="Gateway_0xojqe2" isMarkerVisible="true">
+        <omgdc:Bounds x="465" y="140" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds x="457" y="110" width="67" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1jy28bh_di" bpmnElement="Activity_0cmfnd7">
+        <omgdc:Bounds x="610" y="125" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0takkit_di" bpmnElement="Activity_1wa2r23">
+        <omgdc:Bounds x="810" y="125" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_022v9b9_di" bpmnElement="Gateway_022v9b9" isMarkerVisible="true">
+        <omgdc:Bounds x="1015" y="140" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds x="1016" y="116" width="48" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1lro2qe_di" bpmnElement="Activity_07aefyw">
+        <omgdc:Bounds x="1170" y="125" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0se6jth_di" bpmnElement="Event_0se6jth">
+        <omgdc:Bounds x="1382" y="147" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds x="1364" y="190" width="72" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0jpcbc8_di" bpmnElement="Event_0jpcbc8">
+        <omgdc:Bounds x="472" y="302" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds x="458" y="345" width="64" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_18h0jfb_di" bpmnElement="Event_18h0jfb">
+        <omgdc:Bounds x="1022" y="302" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds x="1008" y="345" width="64" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>

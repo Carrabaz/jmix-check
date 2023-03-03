@@ -10,17 +10,14 @@ import io.jmix.bpmui.processform.annotation.Outcome;
 import io.jmix.bpmui.processform.annotation.Param;
 import io.jmix.bpmui.processform.annotation.ProcessForm;
 import io.jmix.bpmui.processform.annotation.ProcessFormParam;
-import io.jmix.core.DataManager;
 import io.jmix.ui.Notifications;
 import io.jmix.ui.ScreenBuilders;
 import io.jmix.ui.action.Action;
-import io.jmix.ui.component.Button;
-import io.jmix.ui.component.Table;
-import io.jmix.ui.component.TextField;
+import io.jmix.ui.component.*;
 import io.jmix.ui.model.CollectionContainer;
 import io.jmix.ui.model.CollectionPropertyContainer;
 import io.jmix.ui.screen.*;
-import org.flowable.engine.RuntimeService;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,18 +31,19 @@ import java.util.Objects;
 @UiDescriptor("contract-edit.xml")
 @EditedEntityContainer("contractDc")
 @ProcessForm(
-        params = {@Param(name = "contract")},
+        params = {
+                @Param(name = "contract")
+        },
         outcomes = {
                 @Outcome(id = "execute_yes"),
-                @Outcome(id = "execute_no")
+                @Outcome(id = "execute_no"),
+                @Outcome(id = "execute_archive_yes"),
+                @Outcome(id = "execute_archive_no")
         }
 )
 public class ContractEdit extends StandardEditor<Contract> {
 
     private static final Logger log = LoggerFactory.getLogger(ContractEdit.class);
-
-    @Autowired
-    private DataManager dataManager;
 
     @Autowired
     private Notifications notifications;
@@ -55,7 +53,6 @@ public class ContractEdit extends StandardEditor<Contract> {
 
     @Autowired
     private ScreenBuilders screenBuilders;
-
 
     @Autowired
     private CollectionPropertyContainer<Stage> stagesDc;
@@ -70,24 +67,22 @@ public class ContractEdit extends StandardEditor<Contract> {
     private Table<Stage> stagesTable;
 
     @Autowired
-    private RuntimeService runtimeService;
-
-    @Autowired
     private ProcessFormContext processFormContext;
 
     @ProcessFormParam(name = "contract")
     private Contract contractVariable;
 
-    @Subscribe("stagesTable.createCertificate")
-    public void onStagesTableCreateCertificate(Action.ActionPerformedEvent event) {
+    @Autowired
+    private ButtonsPanel stageButtonPanel;
 
-    }
+    @Autowired
+    private Button executedBtn;
 
-    @Subscribe
-    public void onBeforeShow(BeforeShowEvent event) {
-        setEntityToEdit(contractVariable);
-    }
-    
+    @Autowired
+    private Button archivedBtn;
+
+    @Autowired
+    private HBoxLayout editActions;
 
     /**
      * Добавление сертификата к этапу контракта
@@ -144,6 +139,37 @@ public class ContractEdit extends StandardEditor<Contract> {
         });
     }
 
+    @Subscribe("stagesTable.createCertificate")
+    public void onStagesTableCreateCertificate(Action.ActionPerformedEvent event) {
+    }
+
+    @Subscribe
+    public void onInit(InitEvent event) {
+        log.info("InitEvent");
+        if (!Objects.isNull(contractVariable)) {
+            setEntityToEdit(contractVariable);
+            stageButtonPanel.setVisible(false);
+            editActions.setVisible(false);
+            if (StringUtils.equals(contractVariable.getStatus().getName(), "Действует")) {
+                executedBtn.setVisible(true);
+            }
+            if (StringUtils.equals(contractVariable.getStatus().getName(), "Исполнен")) {
+                archivedBtn.setVisible(true);
+            }
+        }
+    }
+
+    @Subscribe("executedBtn")
+    public void onExecutedBtnClick(Button.ClickEvent event) {
+        processFormContext.taskCompletion().withOutcome("execute_yes").complete();
+        closeWithDefaultAction();
+    }
+
+    @Subscribe("archivedBtn")
+    public void onArchivedBtnClick(Button.ClickEvent event) {
+        processFormContext.taskCompletion().withOutcome("execute_archive_yes").complete();
+        closeWithDefaultAction();
+    }
 
     private int calculateTotalAmount(CollectionContainer.CollectionChangeEvent<Stage> event) {
         return event.getSource().getItems().stream().mapToInt(Stage::getAmount).sum();
