@@ -92,7 +92,7 @@
                         <column id="totalAmount"/>
                         <column id="description"/>
                     </columns>
-                    <buttonsPanel>
+                    <buttonsPanel id="stageButtonPanel">
                         <button action="stagesTable.create"/>
                         <button action="stagesTable.edit"/>
                         <button action="stagesTable.remove"/>
@@ -104,6 +104,11 @@
         <hbox id="editActions" spacing="true">
             <button id="commitAndCloseBtn" action="windowCommitAndClose"/>
             <button id="closeBtn" action="windowClose"/>
+
+        </hbox>
+        <hbox id="statusChangeActions" spacing="true">
+            <button id="executedBtn" caption="В исполнен" visible="false"/>
+            <button id="archivedBtn" caption="В архив" visible="false"/>
         </hbox>
     </layout>
 </window>
