@@ -5,6 +5,11 @@ import com.company.training.entity.CustomSettings;
 import com.company.training.entity.ServiceCompletionCertificate;
 import com.company.training.entity.Stage;
 import io.jmix.appsettings.AppSettings;
+import io.jmix.bpmui.processform.ProcessFormContext;
+import io.jmix.bpmui.processform.annotation.Outcome;
+import io.jmix.bpmui.processform.annotation.Param;
+import io.jmix.bpmui.processform.annotation.ProcessForm;
+import io.jmix.bpmui.processform.annotation.ProcessFormParam;
 import io.jmix.core.DataManager;
 import io.jmix.ui.Notifications;
 import io.jmix.ui.ScreenBuilders;
@@ -14,8 +19,8 @@ import io.jmix.ui.component.Table;
 import io.jmix.ui.component.TextField;
 import io.jmix.ui.model.CollectionContainer;
 import io.jmix.ui.model.CollectionPropertyContainer;
-import io.jmix.ui.model.DataContext;
 import io.jmix.ui.screen.*;
+import org.flowable.engine.RuntimeService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,10 +28,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Map;
+import java.util.Objects;
 
 @UiController("t_Contract.edit")
 @UiDescriptor("contract-edit.xml")
 @EditedEntityContainer("contractDc")
+@ProcessForm(
+        params = {@Param(name = "contract")},
+        outcomes = {
+                @Outcome(id = "execute_yes"),
+                @Outcome(id = "execute_no")
+        }
+)
 public class ContractEdit extends StandardEditor<Contract> {
 
     private static final Logger log = LoggerFactory.getLogger(ContractEdit.class);
@@ -43,6 +56,7 @@ public class ContractEdit extends StandardEditor<Contract> {
     @Autowired
     private ScreenBuilders screenBuilders;
 
+
     @Autowired
     private CollectionPropertyContainer<Stage> stagesDc;
 
@@ -55,10 +69,25 @@ public class ContractEdit extends StandardEditor<Contract> {
     @Autowired
     private Table<Stage> stagesTable;
 
+    @Autowired
+    private RuntimeService runtimeService;
+
+    @Autowired
+    private ProcessFormContext processFormContext;
+
+    @ProcessFormParam(name = "contract")
+    private Contract contractVariable;
+
     @Subscribe("stagesTable.createCertificate")
     public void onStagesTableCreateCertificate(Action.ActionPerformedEvent event) {
 
     }
+
+    @Subscribe
+    public void onBeforeShow(BeforeShowEvent event) {
+        setEntityToEdit(contractVariable);
+    }
+    
 
     /**
      * Добавление сертификата к этапу контракта
@@ -86,31 +115,6 @@ public class ContractEdit extends StandardEditor<Contract> {
                 .build().show();
     }
 
-    /**
-     * Создание этапа по умолчанию, если пользователь не стал создавать этапов
-     *
-     * @param event
-     */
-    @Subscribe(target = Target.DATA_CONTEXT)
-    public void onPostCommit(DataContext.PostCommitEvent event) {
-        log.info("<< Post Commit event >>");
-        BigDecimal stageVat = appSettings.load(CustomSettings.class).getStageVat();
-        Contract editedContract = event.getCommittedInstances().getAll(Contract.class).stream().findFirst().orElseThrow();
-        if (editedContract.getStages().size() == 0) {
-            Stage initialStage = dataManager.create(Stage.class);
-            initialStage.setName("Start and End");
-            initialStage.setDateFrom(editedContract.getDateFrom());
-            initialStage.setDateTo(editedContract.getDateTo());
-            initialStage.setAmount(editedContract.getAmount());
-            initialStage.setVat(BigDecimal.valueOf(initialStage.getAmount())
-                    .multiply(stageVat)
-                    .multiply(computeCustomerVat(getEditedEntity())));
-            initialStage.setTotalAmount(initialStage.getAmount() + initialStage.getVat().intValue());
-            initialStage.setDescription("Start till End");
-            initialStage.setContract(editedContract);
-            dataManager.save(initialStage);
-        }
-    }
 
     @Install(to = "stagesTable.create", subject = "screenOptionsSupplier")
     private ScreenOptions stagesTableCreateScreenOptionsSupplier() {
@@ -126,7 +130,7 @@ public class ContractEdit extends StandardEditor<Contract> {
     public void onAfterShow(AfterShowEvent afterShowEvent) {
         log.info("<< Set values for contract on his stages >>");
         Contract c = getEditedEntity();
-        amountField.setEditable(getEditedEntity().getStages() == null);
+        amountField.setEditable(Objects.isNull(getEditedEntity().getStages()) || getEditedEntity().getStages().size() == 0);
         BigDecimal contractVat = appSettings.load(CustomSettings.class).getContractVat();
         stagesDc.addCollectionChangeListener(event -> {
             log.info("Be change in collection listener");
@@ -139,6 +143,7 @@ public class ContractEdit extends StandardEditor<Contract> {
             getEditedEntity().setTotalAmount(amountField.getValue() + vatField.getValue().intValue());
         });
     }
+
 
     private int calculateTotalAmount(CollectionContainer.CollectionChangeEvent<Stage> event) {
         return event.getSource().getItems().stream().mapToInt(Stage::getAmount).sum();

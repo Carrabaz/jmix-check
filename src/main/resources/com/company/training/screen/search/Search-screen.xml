@@ -3,6 +3,6 @@
         xmlns:search="http://jmix.io/schema/search/ui"
         caption="msg://searchScreen.caption">
     <layout>
-        <search:searchField id="searchId"/>
+        <search:searchField id="searchId" caption="Поиск"/>
     </layout>
 </window>

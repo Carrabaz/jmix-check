@@ -70,12 +70,7 @@
                     <textField id="totalAmountField" property="totalAmount" editable="false"/>
                     <textField id="customerSignerField" property="customerSigner"/>
                     <textField id="performerSignerField" property="performerSigner"/>
-                    <entityPicker id="statusField" property="status">
-                        <actions>
-                            <action id="entityLookup" type="entity_lookup"/>
-                            <action id="entityClear" type="entity_clear"/>
-                        </actions>
-                    </entityPicker>
+                    <textField id="statusField" property="status" editable="false"/>
                 </column>
             </form>
             <groupBox id="stagesBox" caption="msg://com.company.training.entity/Contract.stages">

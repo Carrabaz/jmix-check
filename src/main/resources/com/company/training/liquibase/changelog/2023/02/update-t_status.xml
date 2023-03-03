@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.11.xsd"
+        objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
+    <changeSet id="1" author="t">
+        <modifyDataType columnName="DOC" newDataType="CLOB" tableName="T_INVOICE"/>
+        <sql>
+            insert into t_status (code, name) values (100, 'Обсуждается');
+            insert into t_status (code, name) values (200, 'Действует');
+            insert into t_status (code, name) values (300, 'Приостановлен');
+            insert into t_status (code, name) values (400, 'Исполнен');
+            insert into t_status (code, name) values (500, 'Не заключен');
+            insert into t_status (code, name) values (600, 'Расторгнут');
+            insert into t_status (code, name) values (700, 'В Архив');
+        </sql>
+        <rollback>
+            delete from t_status
+        </rollback>
+    </changeSet>
+</databaseChangeLog>
