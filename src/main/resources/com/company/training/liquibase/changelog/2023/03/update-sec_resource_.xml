@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.11.xsd"
+        objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
+    <changeSet id="1" author="t">
+        <sql>
+            insert into sec_resource_role (id, name, code, scopes) values (gen_random_uuid(), 'Manager', 'Manager', '''UI''');
+
+            insert into sec_resource_policy (id, type_, policy_group, resource_, action_, effect, role_id) values (gen_random_uuid(),'entity','t_Contract','t_Contract','delete','allow',(select id from sec_resource_role where name = 'Manager'));
+            insert into sec_resource_policy (id, type_, policy_group, resource_, action_, effect, role_id) values (gen_random_uuid(),'entity','t_Contract','t_Contract','read','allow',(select id from sec_resource_role where name = 'Manager'));
+            insert into sec_resource_policy (id, type_, policy_group, resource_, action_, effect, role_id) values (gen_random_uuid(),'entity','t_Contract','t_Contract','create','allow',(select id from sec_resource_role where name = 'Manager'));
+            insert into sec_resource_policy (id, type_, policy_group, resource_, action_, effect, role_id) values (gen_random_uuid(),'entity','t_Contract','t_Contract','update','allow',(select id from sec_resource_role where name = 'Manager'));
+            insert into sec_resource_policy (id, type_, policy_group, resource_, action_, effect, role_id) values (gen_random_uuid(),'entity','t_Status','t_Status','read','allow',(select id from sec_resource_role where name = 'Manager'));
+            insert into sec_resource_policy (id, type_, policy_group, resource_, action_, effect, role_id) values (gen_random_uuid(),'screen','t_Contract','t_Contract.browse','access','allow',(select id from sec_resource_role where name = 'Manager'));
+            insert into sec_resource_policy (id, type_, policy_group, resource_, action_, effect, role_id) values (gen_random_uuid(),'screen','t_Contract','t_Contract.edit','access','allow',(select id from sec_resource_role where name = 'Manager'));
+            insert into sec_resource_policy (id, type_, policy_group, resource_, action_, effect, role_id) values (gen_random_uuid(),'entityAttribute','t_Contract','t_Contract.*','view','allow',(select id from sec_resource_role where name = 'Manager'));
+            insert into sec_resource_policy (id, type_, policy_group, resource_, action_, effect, role_id) values (gen_random_uuid(),'entity','t_Stage','t_Stage','read','allow',(select id from sec_resource_role where name = 'Manager'));
+            insert into sec_resource_policy (id, type_, policy_group, resource_, action_, effect, role_id) values (gen_random_uuid(),'entityAttribute','t_Stage','t_Stage.*','view','allow',(select id from sec_resource_role where name = 'Manager'));
+        </sql>
+        <rollback>
+            delete from sec_resource_role;
+            delete from sec_resource_policy;
+        </rollback>
+    </changeSet>
+</databaseChangeLog>
