@@ -179,4 +179,15 @@ public class ContractEdit extends StandardEditor<Contract> {
         boolean escapeVat = (customer.getCustomer().getEscapeVat() == null) ? true : false;
         return escapeVat ? BigDecimal.valueOf(0) : BigDecimal.valueOf(1);
     }
+
+/*    @Subscribe("changeState")
+    public void onChangeState(Action.ActionPerformedEvent event) {
+        State st = dataManager.load(State.class).condition(PropertyCondition.equal("name", state)).optional().orElse(null);
+        getEditedEntity().setState(st);
+        processFormContext.taskCompletion()
+                .withOutcome("changeState")
+                .saveInjectedProcessVariables()
+                .complete();
+        closeWithDefaultAction();
+    }*/
 }

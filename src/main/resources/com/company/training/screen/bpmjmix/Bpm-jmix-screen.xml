@@ -1,10 +1,35 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <window xmlns="http://jmix.io/schema/ui/window"
         caption="msg://bpmJmixScreen.caption">
+    <data>
+        <instance id="contractDc"
+                  class="com.company.training.entity.Contract">
+            <fetchPlan extends="_base">
+                <property name="customer" fetchPlan="_base"/>
+                <property name="status" fetchPlan="_base"/>
+                <property name="stages" fetchPlan="_base"/>
+            </fetchPlan>
+            <loader/>
+            <collection id="stagesDc" property="stages"/>
+        </instance>
+        <collection id="customerDc"
+                    class="com.company.training.entity.Organization"
+                    fetchPlan="_local">
+            <loader id="customerLoader">
+                <query>
+                    <![CDATA[select e from t_Organization e]]>
+                </query>
+            </loader>
+        </collection>
+    </data>
+    <actions>
+        <action id="cluc" icon="EDITOR_OK"/>
+    </actions>
     <layout>
         <form>
             <textField id="field1" caption="Поле 1" datatype="string"/>
             <textField id="field2" caption="Поле 2" datatype="string"/>
         </form>
+        <button id="clo" action="cluc" caption="Click"/>
     </layout>
 </window>
