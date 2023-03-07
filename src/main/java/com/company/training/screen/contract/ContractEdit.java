@@ -179,4 +179,15 @@ public class ContractEdit extends StandardEditor<Contract> {
         boolean escapeVat = (customer.getCustomer().getEscapeVat() == null) ? true : false;
         return escapeVat ? BigDecimal.valueOf(0) : BigDecimal.valueOf(1);
     }
+
+    @Subscribe
+    public void onValidation(ValidationEvent event) {
+        
+    }
+
+    /*@Install(to = "stagesTable.create", subject = "enabledRule")
+    private boolean stagesTableCreateEnabledRule() {
+        log.info("fhhfdfkgl");
+        return !Objects.isNull(getEditedEntity().getCustomer()) && !Objects.isNull(getEditedEntity().getAmount());
+    }*/
 }

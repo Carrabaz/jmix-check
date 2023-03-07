@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.math.BigDecimal;
+import java.util.Objects;
 
 @UiController("t_Stage.edit")
 @UiDescriptor("stage-edit.xml")
@@ -29,10 +30,10 @@ public class StageEdit extends StandardEditor<Stage> {
     @Subscribe
     public void onInitEntity(InitEntityEvent<Stage> event) {
         log.info("<< Set default stage values >>");
-        BigDecimal stageVat = appSettings.load(CustomSettings.class).getStageVat();
         Contract contract = event.getEntity().getContract();
+        BigDecimal stageVat = appSettings.load(CustomSettings.class).getStageVat();
         Stage stage = event.getEntity();
-        stage.setAmount(contract.getAmount());
+        stage.setAmount(Objects.isNull(contract.getAmount()) ? 0 : contract.getAmount());
         stage.setVat(BigDecimal.valueOf(stage.getAmount())
                 .multiply(stageVat)
                 .multiply(computeCustomerVat(contract)));

@@ -44,7 +44,7 @@
                 <column width="350px">
                     <entityComboBox dataContainer="contractDc"
                                     optionsContainer="customerDc"
-                                    property="customer">
+                                    property="customer" required="true">
                         <actions>
                             <action id="lookup" type="entity_lookup"/>
                             <action id="clear" type="entity_clear"/>
@@ -93,9 +93,9 @@
                         <column id="description"/>
                     </columns>
                     <buttonsPanel id="stageButtonPanel">
-                        <button action="stagesTable.create"/>
-                        <button action="stagesTable.edit"/>
-                        <button action="stagesTable.remove"/>
+                        <button id="stageCreate" action="stagesTable.create"/>
+                        <button id="stageEdit" action="stagesTable.edit"/>
+                        <button id="stageRemove" action="stagesTable.remove"/>
                         <button id="addCertificate" action="stagesTable.createCertificate"/>
                     </buttonsPanel>
                 </table>
