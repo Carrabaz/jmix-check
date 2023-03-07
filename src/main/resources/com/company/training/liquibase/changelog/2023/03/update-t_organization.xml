@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.11.xsd"
+        objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
+    <changeSet id="1" author="t">
+        <sql>
+            insert into t_Organization (id, name, taxNumber, registrationNumber, escapeVat)
+                                values (gen_random_uuid(), 'AB Group', 7726081034, 773701001, false);
+            insert into t_Organization (id, name, taxNumber, registrationNumber, escapeVat)
+                                values (gen_random_uuid(), '592УНР', 6452087992, 645101001, false);
+            insert into t_Organization (id, name, taxNumber, registrationNumber, escapeVat)
+                                values (gen_random_uuid(), '67 Автоинфо', 6730085907, 673001001, true);
+        </sql>
+        <rollback>
+            delete from t_Organization
+        </rollback>
+    </changeSet>
+</databaseChangeLog>
