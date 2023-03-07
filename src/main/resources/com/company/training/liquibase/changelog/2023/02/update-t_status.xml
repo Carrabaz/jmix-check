@@ -7,6 +7,7 @@
         objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
     <changeSet id="1" author="t">
         <sql>
+            CREATE EXTENSION pgcrypto;
             insert into t_status (id, code, name) values (gen_random_uuid(), 100, 'Обсуждается');
             insert into t_status (id, code, name) values (gen_random_uuid(), 200, 'Действует');
             insert into t_status (id, code, name) values (gen_random_uuid(), 300, 'Приостановлен');
