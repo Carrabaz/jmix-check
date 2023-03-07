@@ -30,8 +30,8 @@ public class StageEdit extends StandardEditor<Stage> {
     @Subscribe
     public void onInitEntity(InitEntityEvent<Stage> event) {
         log.info("<< Set default stage values >>");
-        Contract contract = event.getEntity().getContract();
         BigDecimal stageVat = appSettings.load(CustomSettings.class).getStageVat();
+        Contract contract = event.getEntity().getContract();
         Stage stage = event.getEntity();
         stage.setAmount(Objects.isNull(contract.getAmount()) ? 0 : contract.getAmount());
         stage.setVat(BigDecimal.valueOf(stage.getAmount())

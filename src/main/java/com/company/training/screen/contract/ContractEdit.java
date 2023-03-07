@@ -110,7 +110,6 @@ public class ContractEdit extends StandardEditor<Contract> {
                 .build().show();
     }
 
-
     @Install(to = "stagesTable.create", subject = "screenOptionsSupplier")
     private ScreenOptions stagesTableCreateScreenOptionsSupplier() {
         return new MapScreenOptions(Map.of("Name", "Named_1"));
@@ -137,10 +136,6 @@ public class ContractEdit extends StandardEditor<Contract> {
                     .multiply(computeCustomerVat(getEditedEntity())));
             getEditedEntity().setTotalAmount(amountField.getValue() + vatField.getValue().intValue());
         });
-    }
-
-    @Subscribe("stagesTable.createCertificate")
-    public void onStagesTableCreateCertificate(Action.ActionPerformedEvent event) {
     }
 
     @Subscribe
