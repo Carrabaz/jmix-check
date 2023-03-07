@@ -7,15 +7,15 @@
         objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
     <changeSet id="1" author="t">
         <sql>
-            insert into t_Organization (id, name, taxNumber, registrationNumber, escapeVat)
+            insert into T_ORGANIZATION (ID, NAME, TAX_NUMBER, REGISTRATION_NUMBER, ESCAPE_VAT)
                                 values (gen_random_uuid(), 'AB Group', 7726081034, 773701001, false);
-            insert into t_Organization (id, name, taxNumber, registrationNumber, escapeVat)
+            insert into T_ORGANIZATION (ID, NAME, TAX_NUMBER, REGISTRATION_NUMBER, ESCAPE_VAT)
                                 values (gen_random_uuid(), '592УНР', 6452087992, 645101001, false);
-            insert into t_Organization (id, name, taxNumber, registrationNumber, escapeVat)
+            insert into T_ORGANIZATION (ID, NAME, TAX_NUMBER, REGISTRATION_NUMBER, ESCAPE_VAT)
                                 values (gen_random_uuid(), '67 Автоинфо', 6730085907, 673001001, true);
         </sql>
         <rollback>
-            delete from t_Organization
+            delete from T_ORGANIZATION
         </rollback>
     </changeSet>
 </databaseChangeLog>
